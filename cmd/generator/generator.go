@@ -9,7 +9,7 @@ import (
 
 // generatorCmd represents the generator command
 var GeneratorCmd = &cobra.Command{
-	Use:   "gonerator",
+	Use:   "gonerate",
 	Short: "Generate a rest-api for you",
 	Long:  "This command will generate a rest-api for you, using the http package.",
 	Run: func(cmd *cobra.Command, args []string) {

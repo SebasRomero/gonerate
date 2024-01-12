@@ -1,38 +1,46 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package generator
 
 import (
+	"log"
+
 	filegenerator "sebasromero/github.com/api-generator/cmd/generator/file-generator"
 
 	"github.com/spf13/cobra"
 )
 
-// newCmd represents the new command
 var newCmd = &cobra.Command{
 	Use:   "new",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Initialize the generation",
+	Long:  `It will start the api generation`,
 	Run: func(cmd *cobra.Command, args []string) {
-		filegenerator.InitProject()
+
+		cmd.Help()
+	},
+}
+
+var rest = &cobra.Command{
+	Use:   "rest",
+	Short: "To generate a rest api",
+	Long:  `It will generate a basic rest api`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 0 {
+			log.Fatal("Must specify a project name")
+		}
+		filegenerator.InitProject(args)
+	},
+}
+
+var graph = &cobra.Command{
+	Use:   "graph",
+	Short: "To generate a graphql api",
+	Long:  `It will generate a basic graphql api`,
+	Run: func(cmd *cobra.Command, args []string) {
+		filegenerator.InitProject(args)
 	},
 }
 
 func init() {
-
-	// Here you will define your flags and configuration settings.
 	GeneratorCmd.AddCommand(newCmd)
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// newCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// newCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	newCmd.AddCommand(rest)
+	newCmd.AddCommand(graph)
 }
