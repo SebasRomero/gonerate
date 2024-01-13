@@ -35,6 +35,9 @@ var graph = &cobra.Command{
 	Short: "To generate a graphql api",
 	Long:  `It will generate a basic graphql api`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 0 {
+			log.Fatal("Must specify a project name")
+		}
 		filegenerator.InitProject(args)
 	},
 }
