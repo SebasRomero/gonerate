@@ -2,8 +2,8 @@ package generator
 
 import (
 	"log"
-
 	filegenerator "sebasromero/github.com/api-generator/cmd/generator/file-generator"
+	types "sebasromero/github.com/api-generator/cmd/generator/types"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +26,7 @@ var rest = &cobra.Command{
 		if len(args) == 0 {
 			log.Fatal("Must specify a project name")
 		}
-		filegenerator.InitProject(args)
+		filegenerator.InitProject(args, string(types.Rest))
 	},
 }
 
@@ -38,7 +38,7 @@ var graph = &cobra.Command{
 		if len(args) == 0 {
 			log.Fatal("Must specify a project name")
 		}
-		filegenerator.InitProject(args)
+		filegenerator.InitProject(args, string(types.Graph))
 	},
 }
 
