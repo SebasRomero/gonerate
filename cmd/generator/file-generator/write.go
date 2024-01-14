@@ -1,6 +1,6 @@
 package filegenerator
 
-func initServerWriter() string {
+func initMainWriter() string {
 	return `
 	package main
 	
@@ -25,5 +25,20 @@ func initServerWriter() string {
 	srv.Shutdown(ctx)
 	log.Println("Server stopped")
 	}
+	`
+}
+
+func initServerWriter() string {
+	return `
+	package server
+
+	func New(addr string) *http.Server {
+
+	initRoutes()
+
+	return &http.Server{
+		Addr: addr,
+	}
+}
 	`
 }

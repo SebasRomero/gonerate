@@ -7,15 +7,16 @@ import (
 )
 
 func InitProject(args []string, typeApi string) {
+	projectName := args[0]
 	if typeApi == string(types.Rest) { //TODO Rest
-		projectName := args[0]
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createMain(getCurrentWorkDirectory(projectName))
+		createFolder(getCurrentWorkDirectory(projectName), projectName+"/server")
+		createFile(getCurrentWorkDirectory(projectName), "main.go")
+		createFile(getCurrentWorkDirectory(projectName), "server/server.go")
 
 	} else { //TODO Graph
-		projectName := args[0]
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createMain(getCurrentWorkDirectory(projectName))
+		createFile(getCurrentWorkDirectory(projectName), "")
 
 	}
 }
@@ -29,16 +30,23 @@ func getCurrentWorkDirectory(projectName string) string {
 	return currentDirectory
 }
 
-func createMain(currentDirectory string) {
-	newFile := currentDirectory + "main.go"
+func createFile(currentDirectory string, nameFile string) {
+	newFile := currentDirectory + nameFile
 	file, err := os.Create(newFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	writting := []byte(initServerWriter())
-	file.Write(writting)
+	switch nameFile {
+	case string("server/" + types.Server):
+		writting := []byte(initServerWriter())
+		file.Write(writting)
 
+	case string(types.Main):
+		writting := []byte(initMainWriter())
+		file.Write(writting)
+
+	}
 }
 
 func createFolder(currentDirectory string, projectName string) {
