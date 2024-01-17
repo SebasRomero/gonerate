@@ -1,8 +1,12 @@
 package filegenerator
 
+import (
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+)
+
 func initMainWriter() string {
-	return `
-	package main
+	return `package main
 	
 	func main(){
 	ctx := context.Background()
@@ -29,8 +33,7 @@ func initMainWriter() string {
 }
 
 func initServerWriter() string {
-	return `
-	package server
+	return `package server
 
 	func New(addr string) *http.Server {
 
@@ -40,5 +43,18 @@ func initServerWriter() string {
 		Addr: addr,
 	}
 }
+	`
+}
+
+func initTopic(name string) string { // This isn't working well
+	capitalized := cases.Title(language.Und).String(name)
+	return `package server
+	
+	type ` + capitalized + ` struct {
+		yourFirstProperty   string
+		yourSecondProperty 	string
+	}
+	
+	var ` + name + `array []*` + capitalized + ` = []*` + capitalized + `{}
 	`
 }

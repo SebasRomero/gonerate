@@ -11,12 +11,13 @@ func InitProject(args []string, typeApi string) {
 	if typeApi == string(types.Rest) { //TODO Rest
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
 		createFolder(getCurrentWorkDirectory(projectName), projectName+"/server")
-		createFile(getCurrentWorkDirectory(projectName), "main.go")
-		createFile(getCurrentWorkDirectory(projectName), "server/server.go")
+		createFile(getCurrentWorkDirectory(projectName), "", string(types.Main))
+		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Server))
+		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), projectName)
 
 	} else { //TODO Graph
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createFile(getCurrentWorkDirectory(projectName), "")
+		createFile(getCurrentWorkDirectory(projectName), "", "")
 
 	}
 }
@@ -30,15 +31,15 @@ func getCurrentWorkDirectory(projectName string) string {
 	return currentDirectory
 }
 
-func createFile(currentDirectory string, nameFile string) {
-	newFile := currentDirectory + nameFile
+func createFile(currentDirectory string, route string, nameFile string) {
+	newFile := currentDirectory + route + nameFile
 	file, err := os.Create(newFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	switch nameFile {
-	case string("server/" + types.Server):
+	case string(types.Server):
 		writting := []byte(initServerWriter())
 		file.Write(writting)
 
@@ -46,6 +47,10 @@ func createFile(currentDirectory string, nameFile string) {
 		writting := []byte(initMainWriter())
 		file.Write(writting)
 
+	default:
+		os.Rename(newFile, newFile+".go")
+		writting := []byte(initTopic(nameFile)) //This isn't working well
+		file.Write(writting)
 	}
 }
 
