@@ -55,21 +55,19 @@ func initTopic(name string) string {
 		yourSecondProperty 	string
 	}
 	
-	var ` + name + `array []*` + capitalized + ` = []*` + capitalized + `{}
+	var ` + name + `Array []*` + capitalized + ` = []*` + capitalized + `{}
 	`
 }
 
 func initRoutes(name string) string {
-
-	if len(name) >= 3 {
-		modifiedString := name[:len(name)-3]
-		return `package server
+	capitalized := cases.Title(language.Und).String(name)
+	return `package server
 		func initRoutes() {
 			http.HandleFunc("/", index)
-			http.HandleFunc("/` + string(modifiedString) + `",func(w http.ResponseWriter, r *http.Request){
+			http.HandleFunc("/` + name + `",func(w http.ResponseWriter, r *http.Request){
 				switch r.Method {
 				case http.MethodGet:
-					//addMethod
+					get` + capitalized + `(w,r)
 	
 				case http.MethodPost:
 					//addMethod
@@ -88,7 +86,24 @@ func initRoutes(name string) string {
 			})
 		}
 		`
+}
+
+func initHandlers(name string) string {
+	capitalized := cases.Title(language.Und).String(name)
+	return `package server
+
+	func index(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			fmt.Fprintf(w, "Method not allowed")
+			return
+		}
+		fmt.Fprintf(w, "Hello there")
 	}
 
-	return ""
+	func get` + capitalized + `(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(` + name + `Array)
+	}
+	`
 }

@@ -9,17 +9,22 @@ import (
 func InitProject(args []string, typeApi string) {
 	projectName := args[0]
 	if typeApi == string(types.Rest) { //TODO Rest
-		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createFolder(getCurrentWorkDirectory(projectName), projectName+"/server")
 
-		createFile(getCurrentWorkDirectory(projectName), "", string(types.Main))
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Server))
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), projectName)
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Routes))
+		getCurrentDirectory := getCurrentWorkDirectory(projectName)
+		routeServer := string(types.RouteServer)
+
+		createFolder(getCurrentDirectory, args[0])
+		createFolder(getCurrentDirectory, projectName+"/server")
+
+		createFile(getCurrentDirectory, "", string(types.Main), "")
+		createFile(getCurrentDirectory, routeServer, string(types.Server), "")
+		createFile(getCurrentDirectory, routeServer, projectName, "")
+		createFile(getCurrentDirectory, routeServer, string(types.Routes), projectName)
+		createFile(getCurrentDirectory, routeServer, string(types.Handlers), projectName)
 
 	} else { //TODO Graph
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createFile(getCurrentWorkDirectory(projectName), "", "")
+		createFile(getCurrentWorkDirectory(projectName), "", "", "")
 
 	}
 }
@@ -33,7 +38,7 @@ func getCurrentWorkDirectory(projectName string) string {
 	return currentDirectory
 }
 
-func createFile(currentDirectory string, route string, nameFile string) {
+func createFile(currentDirectory string, route string, nameFile string, nameProject string) {
 	newFile := currentDirectory + route + nameFile
 	file, err := os.Create(newFile)
 	if err != nil {
@@ -50,12 +55,16 @@ func createFile(currentDirectory string, route string, nameFile string) {
 		file.Write(writting)
 
 	case string(types.Routes):
-		writting := []byte(initRoutes(nameFile))
+		writting := []byte(initRoutes(nameProject))
+		file.Write((writting))
+
+	case string(types.Handlers):
+		writting := []byte(initHandlers(nameProject))
 		file.Write((writting))
 
 	default:
 		os.Rename(newFile, newFile+".go")
-		writting := []byte(initTopic(nameFile)) //This isn't working well
+		writting := []byte(initTopic(nameFile))
 		file.Write(writting)
 	}
 }
