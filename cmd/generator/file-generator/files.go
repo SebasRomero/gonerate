@@ -9,6 +9,7 @@ import (
 func InitProject(args []string, typeApi string) {
 	projectName := args[0]
 	if typeApi == string(types.Rest) { //TODO Rest
+
 		getCurrentDirectory := getCurrentWorkDirectory(projectName)
 		routeServer := string(types.RouteServer)
 
@@ -63,7 +64,7 @@ func createFile(currentDirectory string, route string, nameFile string, nameProj
 
 	default:
 		os.Rename(newFile, newFile+".go")
-		writting := []byte(initTopic(nameFile)) //This isn't working well
+		writting := []byte(initTopic(nameFile)) 
 		file.Write(writting)
 	}
 }

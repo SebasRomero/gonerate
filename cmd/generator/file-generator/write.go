@@ -107,3 +107,37 @@ func initHandlers(name string) string {
 	}
 	`
 }
+
+func initRoutes(name string) string {
+
+	if len(name) >= 3 {
+		modifiedString := name[:len(name)-3]
+		return `package server
+		func initRoutes() {
+			http.HandleFunc("/", index)
+			http.HandleFunc("/` + string(modifiedString) + `",func(w http.ResponseWriter, r *http.Request){
+				switch r.Method {
+				case http.MethodGet:
+					//addMethod
+	
+				case http.MethodPost:
+					//addMethod
+	
+				case http.MethodDelete:
+					//addMethod
+				
+				case http.MethodPut:
+					//addMethod
+				
+				default: 
+					w.WriteHeader(http.StatusMethodNotAllowed)
+					fmt.Fprintf(w, "Method not allowed")
+					return
+				}
+			})
+		}
+		`
+	}
+
+	return ""
+}
