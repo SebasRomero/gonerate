@@ -11,9 +11,11 @@ func InitProject(args []string, typeApi string) {
 	if typeApi == string(types.Rest) { //TODO Rest
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
 		createFolder(getCurrentWorkDirectory(projectName), projectName+"/server")
+
 		createFile(getCurrentWorkDirectory(projectName), "", string(types.Main))
 		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Server))
 		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), projectName)
+		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Routes))
 
 	} else { //TODO Graph
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
@@ -46,6 +48,10 @@ func createFile(currentDirectory string, route string, nameFile string) {
 	case string(types.Main):
 		writting := []byte(initMainWriter())
 		file.Write(writting)
+
+	case string(types.Routes):
+		writting := []byte(initRoutes(nameFile))
+		file.Write((writting))
 
 	default:
 		os.Rename(newFile, newFile+".go")
