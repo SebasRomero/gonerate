@@ -9,13 +9,16 @@ import (
 func InitProject(args []string, typeApi string) {
 	projectName := args[0]
 	if typeApi == string(types.Rest) { //TODO Rest
-		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createFolder(getCurrentWorkDirectory(projectName), projectName+"/server")
+		getCurrentDirectory := getCurrentWorkDirectory(projectName)
+		routeServer := string(types.RouteServer)
 
-		createFile(getCurrentWorkDirectory(projectName), "", string(types.Main))
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Server))
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), projectName)
-		createFile(getCurrentWorkDirectory(projectName), string(types.RouteServer), string(types.Routes))
+		createFolder(getCurrentDirectory, args[0])
+		createFolder(getCurrentDirectory, projectName+"/server")
+
+		createFile(getCurrentDirectory, "", string(types.Main))
+		createFile(getCurrentDirectory, routeServer, string(types.Server))
+		createFile(getCurrentDirectory, routeServer, projectName)
+		createFile(getCurrentDirectory, routeServer, string(types.Routes))
 
 	} else { //TODO Graph
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
