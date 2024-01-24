@@ -46,7 +46,7 @@ func initServerWriter() string {
 	`
 }
 
-func initTopic(name string) string { // This isn't working well
+func initTopic(name string) string {
 	capitalized := cases.Title(language.Und).String(name)
 	return `package server
 	
@@ -57,4 +57,38 @@ func initTopic(name string) string { // This isn't working well
 	
 	var ` + name + `array []*` + capitalized + ` = []*` + capitalized + `{}
 	`
+}
+
+func initRoutes(name string) string {
+
+	if len(name) >= 3 {
+		modifiedString := name[:len(name)-3]
+		return `package server
+		func initRoutes() {
+			http.HandleFunc("/", index)
+			http.HandleFunc("/` + string(modifiedString) + `",func(w http.ResponseWriter, r *http.Request){
+				switch r.Method {
+				case http.MethodGet:
+					//addMethod
+	
+				case http.MethodPost:
+					//addMethod
+	
+				case http.MethodDelete:
+					//addMethod
+				
+				case http.MethodPut:
+					//addMethod
+				
+				default: 
+					w.WriteHeader(http.StatusMethodNotAllowed)
+					fmt.Fprintf(w, "Method not allowed")
+					return
+				}
+			})
+		}
+		`
+	}
+
+	return ""
 }
