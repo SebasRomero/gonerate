@@ -15,14 +15,15 @@ func InitProject(args []string, typeApi string) {
 		createFolder(getCurrentDirectory, args[0])
 		createFolder(getCurrentDirectory, projectName+"/server")
 
-		createFile(getCurrentDirectory, "", string(types.Main))
-		createFile(getCurrentDirectory, routeServer, string(types.Server))
-		createFile(getCurrentDirectory, routeServer, projectName)
-		createFile(getCurrentDirectory, routeServer, string(types.Routes))
+		createFile(getCurrentDirectory, "", string(types.Main), "")
+		createFile(getCurrentDirectory, routeServer, string(types.Server), "")
+		createFile(getCurrentDirectory, routeServer, projectName, "")
+		createFile(getCurrentDirectory, routeServer, string(types.Routes), projectName)
+		createFile(getCurrentDirectory, routeServer, string(types.Handlers), projectName)
 
 	} else { //TODO Graph
 		createFolder(getCurrentWorkDirectory(projectName), args[0])
-		createFile(getCurrentWorkDirectory(projectName), "", "")
+		createFile(getCurrentWorkDirectory(projectName), "", "", "")
 
 	}
 }
@@ -36,7 +37,7 @@ func getCurrentWorkDirectory(projectName string) string {
 	return currentDirectory
 }
 
-func createFile(currentDirectory string, route string, nameFile string) {
+func createFile(currentDirectory string, route string, nameFile string, nameProject string) {
 	newFile := currentDirectory + route + nameFile
 	file, err := os.Create(newFile)
 	if err != nil {
@@ -53,7 +54,11 @@ func createFile(currentDirectory string, route string, nameFile string) {
 		file.Write(writting)
 
 	case string(types.Routes):
-		writting := []byte(initRoutes(nameFile))
+		writting := []byte(initRoutes(nameProject))
+		file.Write((writting))
+
+	case string(types.Handlers):
+		writting := []byte(initHandlers(nameProject))
 		file.Write((writting))
 
 	default:
