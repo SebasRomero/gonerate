@@ -9,6 +9,7 @@ import (
 func InitProject(args []string, typeApi string) {
 	projectName := args[0]
 	if typeApi == string(types.Rest) { //TODO Rest
+
 		getCurrentDirectory := getCurrentWorkDirectory(projectName)
 		routeServer := string(types.RouteServer)
 
