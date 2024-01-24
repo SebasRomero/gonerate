@@ -63,7 +63,7 @@ func createFile(currentDirectory string, route string, nameFile string, nameProj
 
 	default:
 		os.Rename(newFile, newFile+".go")
-		writting := []byte(initTopic(nameFile)) //This isn't working well
+		writting := []byte(initTopic(nameFile))
 		file.Write(writting)
 	}
 }
