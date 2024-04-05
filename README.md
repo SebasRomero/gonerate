@@ -5,7 +5,6 @@ Gonerate helps you to start your project using the basic libraries from go, this
 innecesary dependency with any other module out there.
 
 - Rest API (done)
-- GraphQL (todo)
 
 To use it you just need to run the code and the cli would help you to init the project.
 Here's a simple example:
